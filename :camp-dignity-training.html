@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>The Trail — CAMP Volunteer Training</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FCF4E9; --paper-2:#F7E9D5;
+    --ink:#3A2E28; --ink-soft:#6E5B50;
+    --marigold:#F4A93C; --coral:#F2683C; --teal:#159A8C; --teal-deep:#0E6F65;
+    --berry:#C85C8E; --sky:#5AA9D6; --sage:#7BA05B;
+    --good:#2E8B57; --good-bg:#E7F3EC;
+    --mid:#B07A1E;  --mid-bg:#FDF3DD;
+    --miss:#C24A2E; --miss-bg:#FBE7E0;
+    --card:#FFFDF9; --line:#E7D6BE;
+    --shadow:0 10px 30px rgba(120,70,30,.12);
+    --shadow-sm:0 4px 14px rgba(120,70,30,.10);
+    --r-lg:26px; --r-md:18px; --r-sm:12px;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    font-family:'Nunito',system-ui,sans-serif;color:var(--ink);
+    background:
+      radial-gradient(1100px 500px at 80% -10%, #FBE0BE 0%, transparent 60%),
+      radial-gradient(900px 500px at -10% 10%, #FAD9C6 0%, transparent 55%),
+      var(--paper);
+    background-attachment:fixed;line-height:1.55;-webkit-font-smoothing:antialiased;min-height:100vh;
+  }
+  .wrap{max-width:760px;margin:0 auto;padding:28px 20px 80px}
+  h1,h2,h3{font-family:'Fredoka',system-ui,sans-serif;line-height:1.1;margin:0}
+  .eyebrow{font-family:'Fredoka';font-weight:600;letter-spacing:.14em;text-transform:uppercase;font-size:12px;color:var(--coral)}
+  button{font-family:inherit;cursor:pointer}
+  .btn{border:none;border-radius:999px;padding:15px 30px;font-family:'Fredoka';font-weight:600;font-size:17px;color:#fff;
+    background:linear-gradient(135deg,var(--coral),#F08a3d);box-shadow:0 8px 20px rgba(242,104,60,.34);
+    transition:transform .16s ease, box-shadow .16s ease;}
+  .btn:hover{transform:translateY(-2px);box-shadow:0 12px 26px rgba(242,104,60,.42)}
+  .btn.ghost{background:transparent;color:var(--ink);box-shadow:none;border:2px solid var(--line)}
+  .btn.ghost:hover{border-color:var(--marigold);background:#fff8ee;transform:none}
+  .btn.teal{background:linear-gradient(135deg,var(--teal),#16b0a0);box-shadow:0 8px 20px rgba(21,154,140,.32)}
+  :focus-visible{outline:3px solid var(--marigold);outline-offset:3px;border-radius:6px}
+
+  /* ------- entrance animations ------- */
+  .pop{animation:pop .5s cubic-bezier(.2,.9,.3,1.2) both}
+  .rise-in{animation:rise .45s ease both}
+  @keyframes pop{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:scale(1)}}
+  @keyframes rise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+
+  /* ------- HERO ------- */
+  .hero{text-align:center;padding:0 24px 40px;position:relative;background:linear-gradient(180deg,#FFF7E9,#FFEFD6);
+    border:1px solid var(--line);border-radius:var(--r-lg);box-shadow:var(--shadow);overflow:hidden;}
+  .hero:before{content:"";position:absolute;left:0;right:0;top:0;height:8px;z-index:3;
+    background:linear-gradient(90deg,var(--marigold),var(--coral),var(--berry),var(--sky),var(--teal),var(--sage));}
+  .hero-scene{margin:0 -24px 8px;display:block;width:calc(100% + 48px)}
+  .hero h1{font-size:clamp(34px,7vw,52px);font-weight:700;letter-spacing:-.01em}
+  .hero .tag{color:var(--ink-soft);font-size:18px;max-width:44ch;margin:14px auto 0;font-weight:600}
+  .hero .meta{margin-top:22px;font-size:14px;color:var(--ink-soft)}
+  .cta-row{margin-top:26px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+  .note{margin-top:22px;background:var(--card);border:1px solid var(--line);border-radius:var(--r-md);
+    padding:16px 18px;font-size:14.5px;color:var(--ink-soft);display:flex;gap:12px;align-items:flex-start;box-shadow:var(--shadow-sm);}
+  .note b{color:var(--ink)}
+
+  /* ------- ambient SVG animation ------- */
+  .cloud{animation:drift 26s linear infinite}
+  .cloud.c2{animation-duration:38s;animation-delay:-14s}
+  @keyframes drift{from{transform:translateX(-140px)}to{transform:translateX(820px)}}
+  .sunray{transform-box:fill-box;transform-origin:center;animation:spin 40s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .flame{transform-origin:50% 100%;animation:flick .55s ease-in-out infinite alternate}
+  .flame.f2{animation-duration:.42s;animation-delay:.15s}
+  @keyframes flick{from{transform:scaleY(1) scaleX(1)}to{transform:scaleY(1.14) scaleX(.94)}}
+  .firefly{animation:fly 5s ease-in-out infinite alternate;opacity:.9}
+  .firefly.g2{animation-duration:7s;animation-delay:-2s}
+  .firefly.g3{animation-duration:6s;animation-delay:-4s}
+  @keyframes fly{0%{transform:translate(0,0);opacity:.25}50%{opacity:1}100%{transform:translate(26px,-20px);opacity:.35}}
+  .wave{animation:bob 3.4s ease-in-out infinite alternate}
+  .wave.w2{animation-delay:-1.7s}
+  @keyframes bob{from{transform:translateX(0)}to{transform:translateX(-14px)}}
+  .bunting{animation:sway 4s ease-in-out infinite alternate;transform-origin:top center}
+  @keyframes sway{from{transform:rotate(-1.4deg)}to{transform:rotate(1.4deg)}}
+  .horse-tail{transform-box:fill-box;transform-origin:top center;animation:tailswing 2.4s ease-in-out infinite alternate}
+  @keyframes tailswing{from{transform:rotate(-6deg)}to{transform:rotate(9deg)}}
+
+  /* ------- PRIMER ------- */
+  .section-head{text-align:center;margin:8px 0 26px}
+  .section-head h2{font-size:clamp(26px,5vw,34px);font-weight:600;margin-top:6px}
+  .section-head p{color:var(--ink-soft);max-width:50ch;margin:10px auto 0;font-weight:600}
+  .principles{display:grid;gap:14px}
+  .principle{background:var(--card);border:1px solid var(--line);border-radius:var(--r-md);padding:18px 20px;
+    display:flex;gap:16px;align-items:flex-start;box-shadow:var(--shadow-sm);border-left:6px solid var(--marigold);}
+  .principle:nth-child(2){border-left-color:var(--coral)}
+  .principle:nth-child(3){border-left-color:var(--teal)}
+  .principle:nth-child(4){border-left-color:var(--berry)}
+  .principle .em{font-size:30px;line-height:1}
+  .principle h3{font-size:19px;font-weight:600;margin-bottom:3px}
+  .principle p{margin:0;color:var(--ink-soft);font-size:15px}
+  .principle{opacity:0;animation:rise .5s ease forwards}
+  .principle:nth-child(1){animation-delay:.05s}.principle:nth-child(2){animation-delay:.15s}
+  .principle:nth-child(3){animation-delay:.25s}.principle:nth-child(4){animation-delay:.35s}
+
+  /* ------- TRAIL HUB ------- */
+  .trail{position:relative;margin:10px auto 0;padding:14px 0}
+  .trail .rail,.trail .rail-fill{position:absolute;top:20px;left:50%;transform:translateX(-50%);width:0;z-index:0}
+  .trail .rail{bottom:20px;border-left:4px dashed var(--paper-2)}
+  .trail .rail-fill{border-left:4px solid var(--teal);height:var(--fill,0%);max-height:calc(100% - 40px);
+    transition:height .9s cubic-bezier(.4,0,.2,1);opacity:.55}
+  .hiker{position:absolute;left:50%;z-index:3;font-size:26px;transform:translate(-50%,-50%) scaleX(-1);
+    top:var(--hike,28px);transition:top .9s cubic-bezier(.4,0,.2,1);filter:drop-shadow(0 3px 4px rgba(120,70,30,.25));}
+  .station{position:relative;z-index:1;display:flex;align-items:center;margin:6px 0;min-height:96px;
+    opacity:0;animation:rise .5s ease forwards}
+  .station:nth-child(3){animation-delay:.05s}.station:nth-child(4){animation-delay:.12s}
+  .station:nth-child(5){animation-delay:.19s}.station:nth-child(6){animation-delay:.26s}
+  .station:nth-child(7){animation-delay:.33s}.station:nth-child(8){animation-delay:.4s}
+  .station .marker{position:absolute;left:50%;transform:translateX(-50%);width:66px;height:66px;border-radius:50%;
+    display:grid;place-items:center;font-size:30px;background:var(--card);border:4px solid var(--mk,var(--marigold));
+    box-shadow:var(--shadow-sm);z-index:2;transition:transform .18s ease;}
+  .station.done .marker{background:var(--mk);color:#fff;animation:stampin .45s cubic-bezier(.2,.9,.3,1.4) both}
+  @keyframes stampin{from{transform:translateX(-50%) scale(.6) rotate(-14deg)}to{transform:translateX(-50%) scale(1) rotate(0)}}
+  .station .card{width:calc(50% - 60px);background:var(--card);border:1px solid var(--line);border-radius:var(--r-md);
+    padding:15px 17px;box-shadow:var(--shadow-sm);cursor:pointer;transition:transform .16s ease, box-shadow .16s ease;
+    text-align:left;border-top:5px solid var(--mk,var(--marigold));}
+  .station .card:hover{transform:translateY(-3px) rotate(-.4deg);box-shadow:var(--shadow)}
+  .station:nth-child(odd){justify-content:flex-start}
+  .station:nth-child(even){justify-content:flex-end}
+  .station .stop{font-family:'Fredoka';font-weight:600;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--mk,var(--marigold))}
+  .station .card h3{font-size:18px;font-weight:600;margin:2px 0 2px}
+  .station .card .who{font-size:13.5px;color:var(--ink-soft)}
+  .station.done .card{opacity:.85}
+  .badge-done{display:inline-flex;align-items:center;gap:5px;margin-top:8px;font-size:12px;font-weight:800;color:var(--good);background:var(--good-bg);padding:3px 10px;border-radius:999px}
+  .progress-note{text-align:center;color:var(--ink-soft);font-weight:700;margin:2px 0 18px;font-size:14px}
+  .finish-row{text-align:center;margin-top:22px}
+
+  /* ------- SCENARIO ------- */
+  .scene-top{display:flex;align-items:center;gap:12px;margin-bottom:6px}
+  .backlink{background:none;border:none;color:var(--ink-soft);font-weight:700;font-size:14px;padding:6px 4px;display:inline-flex;gap:6px;align-items:center}
+  .backlink:hover{color:var(--coral)}
+  .scene-chip{margin-left:auto;font-family:'Fredoka';font-weight:600;font-size:12px;letter-spacing:.1em;text-transform:uppercase;background:var(--chip,#eee);color:#fff;padding:6px 14px;border-radius:999px}
+  .scene-card{background:var(--card);border:1px solid var(--line);border-radius:var(--r-lg);box-shadow:var(--shadow);overflow:hidden;margin-top:8px}
+  .scene-art{display:block;width:100%;border-bottom:1px solid var(--line)}
+  .scene-body{padding:24px 24px 26px}
+  .meet{display:flex;gap:14px;align-items:center;margin-bottom:14px}
+  .meet .av{width:58px;height:58px;border-radius:50%;display:grid;place-items:center;font-size:30px;background:var(--paper-2);border:3px solid var(--chip,#eee);flex:none}
+  .meet h2{font-size:24px;font-weight:600}
+  .intro{font-size:16.5px;background:#FFF9EF;border:1px dashed var(--line);border-radius:var(--r-md);padding:16px 18px;margin-bottom:20px}
+  .beat-count{font-family:'Fredoka';font-weight:600;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:8px}
+  .prompt{font-size:19px;font-weight:700;margin-bottom:16px}
+  .choices{display:grid;gap:12px}
+  .choice{text-align:left;background:#fff;border:2px solid var(--line);border-radius:var(--r-md);padding:15px 17px;
+    font-size:16px;font-weight:600;color:var(--ink);transition:border-color .14s ease, background .14s ease, transform .12s ease;}
+  .choice:hover{border-color:var(--marigold);background:#FFFaf0;transform:translateY(-1px) rotate(-.3deg)}
+  .choice:disabled{cursor:default;opacity:.55}
+  .choice.pick-good{border-color:var(--good);background:var(--good-bg)}
+  .choice.pick-mid{border-color:var(--mid);background:var(--mid-bg)}
+  .choice.pick-miss{border-color:var(--miss);background:var(--miss-bg)}
+  .feedback{border-radius:var(--r-md);padding:16px 18px;margin-top:16px;font-size:15.5px;animation:rise .3s ease}
+  .feedback.good{background:var(--good-bg);border:1px solid #BFE3CD}
+  .feedback.mid{background:var(--mid-bg);border:1px solid #EBD3A0}
+  .feedback.miss{background:var(--miss-bg);border:1px solid #F1C9BC}
+  .feedback.neutral{background:#F3F0E9;border:1px solid var(--line)}
+  .feedback .fb-head{font-family:'Fredoka';font-weight:600;font-size:15px;display:flex;align-items:center;gap:8px;margin-bottom:4px}
+  .feedback.good .fb-head{color:var(--good)}
+  .feedback.mid .fb-head{color:var(--mid)}
+  .feedback.miss .fb-head{color:var(--miss)}
+  .feedback.neutral .fb-head{color:var(--ink-soft)}
+  .fb-actions{margin-top:14px;display:flex;gap:10px;flex-wrap:wrap}
+  .fb-actions .btn{padding:12px 24px;font-size:15px}
+  .later{background:linear-gradient(135deg,#EFE7F5,#E6E0F2);border:1px solid #D8CCE8;border-radius:var(--r-md);padding:18px 20px;margin-top:16px;animation:rise .5s ease}
+  .breakdown{margin-top:16px;animation:rise .4s ease}
+  .bd-head{font-family:'Fredoka';font-weight:600;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);margin:0 2px 10px}
+  .opt-row{border-radius:var(--r-md);padding:13px 15px;margin-bottom:9px;border:1px solid var(--line);background:#fff}
+  .opt-row.good{background:var(--good-bg);border-color:#BFE3CD}
+  .opt-row.mid{background:var(--mid-bg);border-color:#EBD3A0}
+  .opt-row.miss{background:var(--miss-bg);border-color:#F1C9BC}
+  .opt-row.picked{box-shadow:0 0 0 2px var(--ink) inset}
+  .opt-tag{font-family:'Fredoka';font-weight:600;font-size:11.5px;letter-spacing:.05em;text-transform:uppercase;margin-bottom:4px}
+  .opt-row.good .opt-tag{color:var(--good)}
+  .opt-row.mid .opt-tag{color:var(--mid)}
+  .opt-row.miss .opt-tag{color:var(--miss)}
+  .opt-quote{font-weight:700;font-size:14.5px;margin-bottom:4px;color:var(--ink)}
+  .opt-why{font-size:14px;color:var(--ink-soft);line-height:1.5}
+  .later .fb-head{font-family:'Fredoka';font-weight:600;color:#6B4E9B;display:flex;gap:8px;align-items:center;margin-bottom:6px}
+  .close-beat{font-size:17px;background:#FFF9EF;border:1px dashed var(--line);border-radius:var(--r-md);padding:18px 20px;margin-top:6px}
+  .practiced{display:flex;gap:12px;align-items:center;background:linear-gradient(135deg,#FFF3DE,#FFE8CF);border:1px solid var(--line);border-radius:var(--r-md);padding:16px 18px;margin-top:16px;animation:pop .5s cubic-bezier(.2,.9,.3,1.3) both}
+  .practiced .em{font-size:26px}
+  .practiced b{font-family:'Fredoka';font-weight:600}
+
+  /* ------- WRAP ------- */
+  .wrap-hero{text-align:center;padding:32px 24px;background:linear-gradient(180deg,#FFF7E9,#FFEFD6);border:1px solid var(--line);border-radius:var(--r-lg);box-shadow:var(--shadow);position:relative;overflow:hidden}
+  .score-banner{margin:20px auto 0;max-width:44ch;background:#fff;border:2px solid var(--teal);border-radius:var(--r-md);padding:14px 18px;font-size:16px;font-weight:700;color:var(--ink);box-shadow:var(--shadow-sm)}
+  .score-banner b{color:var(--teal-deep)}
+  .wrap-hero:before{content:"";position:absolute;left:0;right:0;top:0;height:8px;background:linear-gradient(90deg,var(--marigold),var(--coral),var(--berry),var(--sky),var(--teal),var(--sage))}
+  .wrap-hero h2{font-size:clamp(28px,6vw,40px);font-weight:700}
+  .card-print{background:var(--card);border:1px solid var(--line);border-radius:var(--r-lg);box-shadow:var(--shadow-sm);padding:26px 24px;margin-top:20px}
+  .card-print h3{font-size:20px;font-weight:600;margin-bottom:14px;text-align:center}
+  .rulelist{display:grid;gap:10px}
+  .rule{display:flex;gap:13px;align-items:flex-start;padding:12px 14px;background:#FFF9EF;border:1px solid var(--line);border-radius:var(--r-sm)}
+  .rule .n{font-family:'Fredoka';font-weight:700;color:#fff;background:var(--coral);width:28px;height:28px;border-radius:50%;display:grid;place-items:center;flex:none;font-size:14px}
+  .rule:nth-child(2) .n{background:var(--marigold)}
+  .rule:nth-child(3) .n{background:var(--teal)}
+  .rule:nth-child(4) .n{background:var(--berry)}
+  .rule:nth-child(5) .n{background:var(--sky)}
+  .rule:nth-child(6) .n{background:var(--sage)}
+  .rule b{font-weight:800}
+
+  @media (max-width:560px){
+    .trail .rail,.trail .rail-fill,.hiker{left:34px}
+    .station{min-height:auto;margin:10px 0}
+    .station .marker{left:34px;width:56px;height:56px;font-size:26px}
+    .station .card{width:calc(100% - 84px)}
+    .station:nth-child(odd),.station:nth-child(even){justify-content:flex-end}
+    .hero{padding-bottom:32px}
+    .scene-body{padding:20px 18px 22px}
+  }
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+  @media print{
+    body{background:#fff}
+    .no-print{display:none!important}
+    .card-print{box-shadow:none;border:2px solid #333}
+  }
+</style>
+</head>
+<body>
+<main class="wrap" id="app" aria-live="off"></main>
+
+<script>
+/* ================= SCENE ART (inline SVG, flat + animated) ================= */
+const SKY_DAY = '<defs><linearGradient id="skyd" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#BFE3F2"/><stop offset="1" stop-color="#FDEBC8"/></linearGradient><linearGradient id="skye" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3E3A6D"/><stop offset=".55" stop-color="#8A5A8F"/><stop offset="1" stop-color="#F2955C"/></linearGradient></defs>';
+function cloud(x,y,s){return `<g class="cloud" style="animation-delay:${-x/34}s"><g transform="translate(${x},${y}) scale(${s})" fill="#fff" opacity=".85"><ellipse cx="0" cy="0" rx="34" ry="14"/><ellipse cx="24" cy="-8" rx="22" ry="12"/><ellipse cx="-22" cy="-6" rx="18" ry="10"/></g></g>`;}
+function sun(x,y){return `<g transform="translate(${x},${y})"><g class="sunray" fill="#F9C74F" opacity=".55">${[0,45,90,135,180,225,270,315].map(a=>`<rect x="-3" y="-46" width="6" height="16" rx="3" transform="rotate(${a})"/>`).join('')}</g><circle r="24" fill="#F9C74F"/><circle r="24" fill="#FFD97A" opacity=".6"/></g>`;}
+
+const ART = {
+horse:`<svg class="scene-art" viewBox="0 0 700 190" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A barn and paddock at golden hour">
+${SKY_DAY}<rect width="700" height="190" fill="url(#skyd)"/>
+${sun(600,52)}${cloud(120,44,1)}${cloud(380,30,.7)}
+<rect y="130" width="700" height="60" fill="#A8C686"/><rect y="126" width="700" height="8" fill="#93B573" opacity=".7"/>
+<g transform="translate(80,52)"><path d="M0 40 L55 0 L110 40 V96 H0 Z" fill="#C4432B"/><path d="M-8 44 L55 -6 L118 44 L110 40 L55 0 L0 40 Z" fill="#8F2F1D"/><rect x="38" y="52" width="34" height="44" fill="#7A2A1A"/><path d="M38 52 h34 v44 h-34 Z M38 52 l34 44 M72 52 l-34 44" stroke="#E8D9B5" stroke-width="4" fill="#7A2A1A"/><rect x="10" y="52" width="18" height="18" fill="#FFF3D6"/><rect x="82" y="52" width="18" height="18" fill="#FFF3D6"/></g>
+<g stroke="#8A6B4F" stroke-width="5" stroke-linecap="round"><line x1="250" y1="150" x2="250" y2="112"/><line x1="330" y1="150" x2="330" y2="112"/><line x1="410" y1="150" x2="410" y2="112"/><line x1="490" y1="150" x2="490" y2="112"/><line x1="225" y1="122" x2="515" y2="122"/><line x1="225" y1="140" x2="515" y2="140"/></g>
+<g transform="translate(545,96)"><ellipse cx="0" cy="18" rx="30" ry="17" fill="#6E4A32"/><rect x="20" y="6" width="12" height="20" rx="6" fill="#6E4A32"/><circle cx="31" cy="2" r="9" fill="#6E4A32"/><path d="M27 -5 l4 -7 3 7z" fill="#5A3A26"/><g class="horse-tail"><path d="M-26 4 q-8 14 -4 28 q2 8 -2 14" stroke="#4E3320" stroke-width="6" fill="none" stroke-linecap="round"/></g><g stroke="#6E4A32" stroke-width="6" stroke-linecap="round"><line x1="-14" y1="30" x2="-14" y2="48"/><line x1="12" y1="30" x2="12" y2="48"/></g></g>
+</svg>`,
+crafts:`<svg class="scene-art" viewBox="0 0 700 190" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="An easel and paints in the craft cabin">
+${SKY_DAY}<rect width="700" height="190" fill="#FBEED9"/>
+<rect y="0" width="700" height="190" fill="none"/>
+<g stroke="#E3CBA4" stroke-width="10"><line x1="0" y1="30" x2="700" y2="30"/><line x1="0" y1="75" x2="700" y2="75"/><line x1="0" y1="120" x2="700" y2="120"/><line x1="0" y1="165" x2="700" y2="165"/></g>
+<g transform="translate(120,40)"><polygon points="0,120 34,0 44,0 78,120 62,120 39,26 16,120" fill="#8A6B4F"/><rect x="-14" y="18" width="106" height="76" rx="6" fill="#FFF9EE" stroke="#8A6B4F" stroke-width="5"/><path d="M0 76 q20 -26 38 -8 q16 16 34 -14" stroke="#159A8C" stroke-width="6" fill="none" stroke-linecap="round"/><circle cx="20" cy="42" r="9" fill="#F4A93C"/><circle cx="66" cy="38" r="7" fill="#C85C8E"/></g>
+<g transform="translate(330,118)"><rect x="0" y="0" width="250" height="14" rx="7" fill="#B58A5F"/><rect x="14" y="14" width="12" height="42" fill="#966E46"/><rect x="224" y="14" width="12" height="42" fill="#966E46"/>
+<g transform="translate(30,-26)"><ellipse cx="0" cy="14" rx="20" ry="9" fill="#E7D6BE"/><rect x="-14" y="-8" width="28" height="22" rx="8" fill="#F2683C"/><rect x="-14" y="-14" width="28" height="10" rx="5" fill="#D9532B"/></g>
+<g transform="translate(88,-22)"><rect x="-12" y="-10" width="24" height="24" rx="6" fill="#159A8C"/><rect x="-12" y="-16" width="24" height="9" rx="4" fill="#0E6F65"/></g>
+<g transform="translate(146,-24)"><rect x="-12" y="-8" width="24" height="22" rx="6" fill="#C85C8E"/><rect x="-12" y="-14" width="24" height="9" rx="4" fill="#A94875"/></g>
+<g transform="translate(205,-30)"><path d="M-16 20 h32 l-6 -34 h-20 Z" fill="#FFF3D6" stroke="#B58A5F" stroke-width="4"/><line x1="0" y1="-14" x2="0" y2="-34" stroke="#8A6B4F" stroke-width="5" stroke-linecap="round"/><path d="M-2 -34 l4 0 0 -8 -4 0z" fill="#F4A93C"/></g></g>
+</svg>`,
+swim:`<svg class="scene-art" viewBox="0 0 700 190" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The camp lake with buoys and waves">
+${SKY_DAY}<rect width="700" height="190" fill="url(#skyd)"/>
+${sun(96,50)}${cloud(300,36,.9)}${cloud(540,54,.65)}
+<rect y="96" width="700" height="94" fill="#5AA9D6"/><rect y="96" width="700" height="10" fill="#8CC5E6"/>
+<g class="wave" stroke="#BFE3F2" stroke-width="6" fill="none" stroke-linecap="round"><path d="M40 130 q16 -10 32 0 q16 10 32 0"/><path d="M300 152 q16 -10 32 0 q16 10 32 0"/><path d="M520 128 q16 -10 32 0 q16 10 32 0"/></g>
+<g class="wave w2" stroke="#8CC5E6" stroke-width="6" fill="none" stroke-linecap="round"><path d="M160 164 q16 -10 32 0 q16 10 32 0"/><path d="M430 168 q16 -10 32 0 q16 10 32 0"/></g>
+<g><circle cx="240" cy="118" r="10" fill="#F2683C"/><circle cx="460" cy="120" r="10" fill="#F2683C"/><line x1="250" y1="118" x2="450" y2="120" stroke="#FFF3D6" stroke-width="4" stroke-dasharray="10 10"/></g>
+<g transform="translate(610,70)"><rect x="-6" y="0" width="12" height="56" fill="#8A6B4F"/><rect x="-30" y="-24" width="60" height="30" rx="8" fill="#FFF3D6" stroke="#F2683C" stroke-width="5"/><circle cx="0" cy="-9" r="9" fill="#F2683C"/></g>
+</svg>`,
+bball:`<svg class="scene-art" viewBox="0 0 700 190" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="An outdoor basketball hoop">
+${SKY_DAY}<rect width="700" height="190" fill="url(#skyd)"/>
+${cloud(180,38,.8)}${cloud(470,52,.6)}
+<rect y="138" width="700" height="52" fill="#9BA6AD"/><line x1="0" y1="164" x2="700" y2="164" stroke="#F4A93C" stroke-width="5" stroke-dasharray="26 20"/>
+<g transform="translate(560,20)"><rect x="26" y="34" width="10" height="106" fill="#5C6B75"/><rect x="-30" y="0" width="96" height="62" rx="8" fill="#FFF9EE" stroke="#5C6B75" stroke-width="6"/><rect x="-4" y="26" width="44" height="30" fill="none" stroke="#F2683C" stroke-width="5"/><line x1="-8" y1="58" x2="44" y2="58" stroke="#F2683C" stroke-width="7" stroke-linecap="round"/><g stroke="#FFF" stroke-width="3" opacity=".9"><line x1="-4" y1="60" x2="4" y2="84"/><line x1="10" y1="60" x2="14" y2="84"/><line x1="26" y1="60" x2="24" y2="84"/><line x1="40" y1="60" x2="34" y2="84"/><path d="M4 84 q14 8 30 0" fill="none"/></g></g>
+</svg>`,
+smores:`<svg class="scene-art" viewBox="0 0 700 190" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A campfire at dusk with fireflies">
+${SKY_DAY}<rect width="700" height="190" fill="url(#skye)"/>
+<circle cx="590" cy="46" r="22" fill="#FFF3D6" opacity=".95"/><circle cx="582" cy="40" r="6" fill="#E8D9B5" opacity=".6"/><circle cx="598" cy="52" r="4" fill="#E8D9B5" opacity=".6"/>
+<g fill="#FFF" opacity=".9"><circle cx="90" cy="38" r="2.4"/><circle cx="200" cy="24" r="2"/><circle cx="330" cy="44" r="2.2"/><circle cx="470" cy="28" r="2"/></g>
+<rect y="140" width="700" height="50" fill="#2E4034"/>
+<g transform="translate(350,132)"><g stroke="#5A3A26" stroke-width="10" stroke-linecap="round"><line x1="-34" y1="10" x2="34" y2="-2"/><line x1="-34" y1="-2" x2="34" y2="10"/></g>
+<g class="flame"><path d="M0 -6 C -20 -26 -12 -52 0 -66 C 12 -52 20 -26 0 -6 Z" fill="#F2683C"/></g>
+<g class="flame f2"><path d="M0 -8 C -11 -22 -7 -38 0 -48 C 7 -38 11 -22 0 -8 Z" fill="#F9C74F"/></g></g>
+<g fill="#D9F26B"><circle class="firefly" cx="250" cy="90" r="4"/><circle class="firefly g2" cx="460" cy="76" r="4"/><circle class="firefly g3" cx="530" cy="110" r="3.4"/><circle class="firefly g2" cx="170" cy="116" r="3.4"/></g>
+<g transform="translate(140,118)"><rect x="-30" y="0" width="60" height="14" rx="7" fill="#5A3A26"/></g>
+<g transform="translate(560,122)"><rect x="-30" y="0" width="60" height="14" rx="7" fill="#5A3A26"/></g>
+</svg>`,
+dining:`<svg class="scene-art" viewBox="0 0 700 190" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The dining hall with bunting and a set table">
+<rect width="700" height="190" fill="#FBEED9"/>
+<g stroke="#E3CBA4" stroke-width="10"><line x1="0" y1="34" x2="700" y2="34"/><line x1="0" y1="82" x2="700" y2="82"/></g>
+<g class="bunting"><path d="M40 14 Q 350 66 660 14" stroke="#8A6B4F" stroke-width="4" fill="none"/>
+${[80,150,220,290,360,430,500,570].map((x,i)=>{const c=['#F2683C','#F4A93C','#159A8C','#C85C8E','#5AA9D6','#7BA05B'][i%6];const y=(x=>{const t=(x-40)/620;return 14+52*4*t*(1-t)*.5+ (Math.sin(t*3.14)*24);})(x);return `<polygon points="${x},${y} ${x+26},${y} ${x+13},${y+26}" fill="${c}"/>`;}).join('')}</g>
+<rect y="112" width="700" height="16" rx="8" fill="#B58A5F"/><rect x="60" y="128" width="16" height="52" fill="#966E46"/><rect x="624" y="128" width="16" height="52" fill="#966E46"/>
+<g transform="translate(180,96)"><ellipse cx="0" cy="10" rx="34" ry="10" fill="#FFF9EE" stroke="#E7D6BE" stroke-width="3"/><path d="M-16 4 q16 -12 32 0" fill="#F4A93C"/></g>
+<g transform="translate(350,92)"><rect x="-24" y="-6" width="48" height="22" rx="6" fill="#159A8C"/><rect x="-18" y="-14" width="36" height="10" rx="4" fill="#0E6F65"/><circle cx="0" cy="4" r="5" fill="#FFF9EE"/></g>
+<g transform="translate(520,96)"><ellipse cx="0" cy="10" rx="30" ry="10" fill="#FFF9EE" stroke="#E7D6BE" stroke-width="3"/><circle cx="-8" cy="4" r="7" fill="#C85C8E"/><circle cx="8" cy="2" r="7" fill="#7BA05B"/></g>
+</svg>`
+};
+
+const HERO_ART = `<svg class="hero-scene" viewBox="0 0 700 210" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A camp scene: tents by a lake under a golden sky">
+${SKY_DAY}<rect width="700" height="210" fill="url(#skyd)"/>
+${sun(590,64)}${cloud(140,52,1)}${cloud(400,34,.7)}
+<path d="M0 150 Q 180 96 350 132 T 700 122 V 210 H 0 Z" fill="#A8C686"/>
+<path d="M0 176 Q 200 150 420 170 T 700 162 V 210 H 0 Z" fill="#8FB673"/>
+<g transform="translate(200,102)"><polygon points="0,52 42,0 84,52" fill="#F2683C"/><polygon points="30,52 42,16 54,52" fill="#8F2F1D"/><line x1="42" y1="0" x2="42" y2="-12" stroke="#5A3A26" stroke-width="4"/><polygon points="42,-12 62,-6 42,0" fill="#F4A93C"/></g>
+<g transform="translate(330,116)"><polygon points="0,44 36,0 72,44" fill="#159A8C"/><polygon points="26,44 36,14 46,44" fill="#0E6F65"/></g>
+<g transform="translate(96,128)"><polygon points="0,36 30,0 60,36" fill="#C85C8E"/><polygon points="21,36 30,12 39,36" fill="#A94875"/></g>
+<g transform="translate(470,150)"><g stroke="#5A3A26" stroke-width="7" stroke-linecap="round"><line x1="-20" y1="8" x2="20" y2="-2"/><line x1="-20" y1="-2" x2="20" y2="8"/></g><g class="flame"><path d="M0 -4 C -12 -18 -8 -34 0 -44 C 8 -34 12 -18 0 -4 Z" fill="#F2683C"/></g><g class="flame f2"><path d="M0 -6 C -7 -15 -4 -25 0 -32 C 4 -25 7 -15 0 -6 Z" fill="#F9C74F"/></g></g>
+<g fill="#D9F26B"><circle class="firefly" cx="540" cy="120" r="3.4"/><circle class="firefly g2" cx="600" cy="150" r="3"/></g>
+</svg>`;
+
+/* ================= CONTENT ================= */
+const PRINCIPLES = [
+  {em:"👤", h:"See the person first", p:"Every camper, whether they're 12 or 42, is a whole person: an athlete, an artist, a critic. Learn that part first."},
+  {em:"🤲", h:"Offer, don't impose", p:"Help is something you ask about, not something you do to someone. \u201CWant a hand?\u201D Then honor the answer."},
+  {em:"🎈", h:"Let them lead", p:"Their body, their pace, their choices, their words. You're the support, not the main character."},
+  {em:"🌱", h:"Kind isn't automatically dignified", p:"Most mistakes here look like helping. This trail is practice at telling the difference, and you're allowed to get it wrong."}
+];
+
+/* tier: good | mid | miss */
+const SCENARIOS = [
+  {
+    id:"horse", stop:"Stop 1", activity:"Horseback Riding", emoji:"🐴", color:"var(--marigold)",
+    camper:"Maya, 15", art:"horse",
+    intro:"Maya, 15, has been coming to the barn every summer for three years. She knows every horse by name and which ones spook at the wind. Today she's transferring from her wheelchair onto the mounting ramp to ride Biscuit. You're spotting.",
+    beats:[
+      {prompt:"Maya rolls up to the ramp and starts lining up her chair. You decide to offer help. All that's left is how to say it.",
+       choices:[
+        {t:"\u201CDo you need help with that?\u201D",tier:"mid",fb:"Close, and most people would call it polite. But \u201Cneed\u201D frames the offer as a deficit check: to say yes, she has to admit she can't. \u201CWant\u201D leaves it a preference, like offering anyone a hand with groceries. One word, different weight. That's how fine this gets."},
+        {t:"\u201CWant a spot, or are you good?\u201D",tier:"good",fb:"\u201CWant,\u201D not \u201Cneed,\u201D and \u201Cor are you good\u201D builds the no right into the sentence, so declining costs her nothing. This is the version where help is a preference she can take or leave, not a verdict on her ability."},
+        {t:"\u201CHere, let me give you a hand with that, okay?\u201D",tier:"miss",fb:"It has a question mark, but listen to it: the decision is already announced, and the \u201Cokay?\u201D is a courtesy tag asking her to approve what you've decided. That's consent theater. An offer she can refuse starts with a real question, not with \u201Clet me.\u201D"},
+        {t:"\u201CYou always transfer by yourself, right? Should be fine then.\u201D",tier:"mid",fb:"It sounds like respect for her independence, but it makes her confirm her own competence out loud before you'll act. A real offer doesn't require her to audition for it first."}
+       ]},
+      {prompt:"She says, \u201CSteady the ramp rail while I transfer?\u201D Halfway across, she wobbles for a second.",
+       choices:[
+        {t:"Keep steadying the rail exactly like she asked. Stay alert, hands where they are.",tier:"good",fb:"A wobble isn't a crisis; it's a Tuesday. She asked for one specific thing. You did it and stayed ready in case she asks for more. Trusting her to manage her own body is the respect."},
+        {t:"Keep one hand on the rail and put your other hand on her back, just for extra support.",tier:"mid",fb:"Half right: you kept doing what she asked. But the second hand is help she didn't ask for, touching her without asking, mid-move. If you think she needs more, say it out loud. \u201CWant another hand?\u201D Words before hands."},
+        {t:"Steady the rail and keep up a soothing commentary: \u201CCareful. Easy. I've got you, I've got you.\u201D",tier:"miss",fb:"Hands did the right thing; the mouth undid it. \u201CI've got you\u201D quietly recasts her transfer as your catch, and narrated caution broadcasts doubt to everyone in earshot. She asked for a steady rail, not a soundtrack. Silence was the supportive option."},
+        {t:"Steady the rail, and add \u201CTake your time, no rush at all.\u201D",tier:"mid",fb:"Kind words at the wrong moment: she didn't ask you to narrate her pace, and \u201Cno rush\u201D implies you expected her to be rushing. Steadying in silence trusts her rhythm; steadying with commentary manages it."}
+       ]},
+      {prompt:"Another volunteer watches Maya trot past and gushes: \u201CShe is SO inspiring. Isn't she amazing?\u201D Then turns to you for agreement.",
+       choices:[
+        {t:"\u201CShe's a rider. Three summers in. Ask her about Biscuit sometime.\u201D",tier:"good",fb:"You swapped \u201Cinspiring\u201D for the truth: skilled. Being inspiring just for existing is a pedestal, and pedestals are lonely places. Naming her actual competence puts her back on the ground with every other rider."},
+        {t:"\u201CSo amazing. Maya, you're a hero!\u201D",tier:"mid",fb:"Warm, and it just turned a girl doing her hobby into a symbol doing a performance. She's not riding to move you. Praise the riding the way you'd praise any rider, or just let her ride."},
+        {t:"Nod and say quietly, \u201CIt's incredible what they can do.\u201D",tier:"miss",fb:"\u201CThey.\u201D In one word Maya went from a person to a category, discussed in third person, ten feet away, mid-ride. Talk about her like any 15-year-old athlete. Better yet, talk to her."},
+        {t:"\u201CHonestly, she's just like any other rider out here.\u201D",tier:"mid",fb:"It's aimed at the right target, but you're still the one narrating her normalcy to a stranger, on her behalf, without her in the conversation. What actually respects her is talking about her riding, not defending it."}
+       ]}
+    ],
+    close:"Maya settles into the saddle, takes Biscuit's reins, and grins: \u201CTold you he behaves for me.\u201D You spotted her. You didn't ride for her.",
+    practiced:"Offer help, don't impose it. And honor exactly what was asked."
+  },
+  {
+    id:"crafts", stop:"Stop 2", activity:"Arts & Crafts", emoji:"🎨", color:"var(--coral)",
+    camper:"Dennis, 41", art:"crafts",
+    intro:"Dennis is 41. He works part-time at a hardware store, follows the Cowboys, and comes to CAMP every summer mostly for the woodshop. He has Down syndrome, lines up his paint colors before he starts, and the display shelf in the craft cabin is basically his. Today: birdhouse number four.",
+    beats:[
+      {prompt:"Dennis is painting the house, slow and precise. You want to compliment him. Three sentences come to mind.",
+       choices:[
+        {t:"\u201CYou're doing such a great job, Dennis!\u201D",tier:"mid",fb:"Warm, harmless-sounding, and it's the one to study. It praises him, not the work, and \u201Csuch a great job\u201D is what you tell someone you expected less from. You wouldn't say it to the carpenter fixing your porch. The tell isn't the words; it's whether you'd use them on any other 41-year-old."},
+        {t:"\u201CThat paint line is really clean. How do you keep it so even?\u201D",tier:"good",fb:"This one compliments the craft and asks a real question, which is how adults talk to skilled adults. Specific beats generic, and curiosity beats applause. He gets to be an expert for a minute, because he is one."},
+        {t:"\u201CWow, you did this all by yourself?\u201D",tier:"miss",fb:"Said with total warmth, and it lands like a slap, because the surprise is the message. \u201CAll by yourself\u201D announces that independence was unexpected. It's his fourth birdhouse. The kindest words can carry the lowest expectations."},
+        {t:"\u201CYou should be so proud of yourself!\u201D",tier:"mid",fb:"It centers his feelings about the work instead of the work, the way you'd cheer a kid's finger painting. Would you say this to a coworker who nailed a report? If not, it's not the sentence for a 41-year-old's paint work either."}
+       ]},
+      {prompt:"He's wrestling with a stiff paint jar lid. He hasn't asked for help.",
+       choices:[
+        {t:"Quietly grab an already-open jar of the same green and swap it in front of him.",tier:"mid",fb:"Sneaky-thoughtful, right? Except you just decided, for him, that he couldn't do it, and you did it in a way that skips even the courtesy of asking. Invisible help is still uninvited help. He gets to struggle with a lid. Everyone does."},
+        {t:"Give it a beat. If he still looks stuck: \u201CWant me to crack that lid?\u201D",tier:"good",fb:"You let him have his own two seconds of trying (not everything is a problem to solve), then offered instead of acting. And if he says \u201CI got it,\u201D you let him have it. That's the move."},
+        {t:"Reach over with a warm smile and open it for him. No words needed between friends.",tier:"miss",fb:"The smile makes it feel friendly, but taking something out of an adult's hands uninvited is the same act at 41 as it would be with any coworker: presumptuous. Even helpful hands, uninvited, say \u201CI didn't think you'd get there.\u201D"},
+        {t:"Ask the counselor to swap in an easier-to-open jar for the whole table, Dennis included.",tier:"mid",fb:"Generous, and it never singles him out by name, which is the right instinct. But you still removed the challenge before he asked, just with better camouflage. Removing a hurdle preemptively is still removing his choice about whether to try it."}
+       ]},
+      {prompt:"A younger camper sidles up next to you, watching Dennis paint, and whispers: \u201CWhat's… wrong with him?\u201D",
+       choices:[
+        {t:"\u201CNothing's wrong. That's Dennis, he built half that shelf. Go ask him about the paint.\u201D",tier:"good",fb:"You corrected the frame (\u201Cwrong\u201D), skipped the medical file, and pointed the kid toward the only real answer: knowing him. Dennis's diagnosis is his to share, or not."},
+        {t:"Quietly explain Down syndrome so the kid understands.",tier:"mid",fb:"The educational instinct is decent, but it's not your information to hand out. You just gave a stranger a medical briefing about a man ten feet away. If Dennis wants to explain himself, he's fully capable. Send the curiosity to him."},
+        {t:"\u201CHe has Down syndrome, but he's the sweetest guy here.\u201D",tier:"miss",fb:"Two problems in one kind sentence: you disclosed his diagnosis for him, and the \u201Cbut\u201D quietly implies sweet was a surprise. Nobody needs a diagnosis to go say hi to the birdhouse guy."},
+        {t:"\u201CEveryone here is different, and that's totally okay!\u201D",tier:"mid",fb:"Vague and well-meant, and it avoids naming anything specific, which feels safe. But it also dodges the kid's actual question and treats \u201Cdifferent\u201D as something needing reassurance, instead of just sending the kid to Dennis himself."}
+       ]}
+    ],
+    close:"Dennis signs the base with a block-letter D, sets the birdhouse on his shelf, and tells you the Cowboys are going all the way this year. He didn't need you to build it. He needed you to see it.",
+    practiced:"Presume competence, and talk to adults like adults."
+  },
+  {
+    id:"swim", stop:"Stop 3", activity:"Swimming", emoji:"🏊", color:"var(--sky)",
+    camper:"Aiden, 12", art:"swim",
+    intro:"Aiden, 12, swims like a fish: first one in, last one out. He's autistic, and his aide Dana is poolside today. Aiden knows the pool rules better than half the counselors.",
+    beats:[
+      {prompt:"You're checking everyone's set for free swim, and you're wondering whether Aiden wants a swim vest.",
+       choices:[
+        {t:"Ask Dana quietly, off to the side, so you don't put Aiden on the spot.",tier:"mid",
+         delayed:{scene:"Dana says he's fine without one. Easy. Free swim starts, everybody's in, nothing went wrong.",
+         reveal:"Twenty minutes later you ask Aiden if he wants in on the relay. He doesn't answer you. He looks at Dana. Of course he does: the one exchange he saw you have about him, you had with her. \u201CNot putting him on the spot\u201D taught him, gently and completely, that you don't talk to him. Quiet choices teach fast."},
+         fb:"Going around Aiden to spare him the spotlight feels considerate, but it teaches him, in one quiet exchange, that questions about him get answered by someone else. The cost doesn't show up right away, which is exactly why it's easy to miss."},
+        {t:"Ask Aiden directly: \u201CYou good without a vest, or want one?\u201D",tier:"good",fb:"You went straight to the person, and he's the expert on Aiden. Dana is there to support him, not to be his voice. If he wants her input, he'll look to her. That's his call to make, not yours."},
+        {t:"Bring him a vest already buckled: \u201CGrabbed you one just in case!\u201D",tier:"miss",fb:"Cheerful, proactive, and it skips his say entirely. Deciding a strong swimmer needs gear he didn't ask for overrides both his skill and his voice, with a smile. Ask before you equip."},
+        {t:"Ask him, but phrase it as \u201CYou don't need a vest, right?\u201D",tier:"mid",fb:"You did ask him, which is the right instinct, but the phrasing already supplies the answer you expect. A real question leaves both doors open; this one only has an exit for no."}
+       ]},
+      {prompt:"During free swim, Aiden is happily doing laps alone at the deep end.",
+       choices:[
+        {t:"Hop in and swim alongside him so he's not by himself down there.",tier:"mid",fb:"Company sounds kind, but he didn't ask for any, and he's not lonely. He's doing laps. Uninvited companionship \u201Cfor his sake\u201D is hovering with extra steps. If you want to swim with him, ask like you'd ask anyone (\u201Cmind if I join?\u201D) and take no for an answer."},
+        {t:"Keep normal lifeguard eyes on the whole pool, Aiden included, and let him swim.",tier:"good",fb:"Same attention everyone gets, no more and no less. Real safety covers the whole pool. Anxious extra coverage of one kid is a spotlight, not safety."},
+        {t:"Call him back toward the middle \u201Cwhere it's easier to keep an eye on everyone.\u201D",tier:"miss",fb:"Framed as logistics, but only one swimmer got moved. Pulling a capable swimmer out of the deep end \u201Cto be safe\u201D takes the thing he loves and calls it caution. Safety inflation is the polite face of doubt."},
+        {t:"Post a second guard near the deep end, just for today.",tier:"mid",fb:"Reads like reasonable coverage, and nobody said his name out loud. But if this only happens on days Aiden swims, it's targeted supervision wearing a routine-procedure costume. Ask whether you'd do it for any strong swimmer, not just him."}
+       ]},
+      {prompt:"A lifeguard drill starts: three long whistle blasts. Aiden presses his hands over his ears, climbs out, and goes to sit by the fence.",
+       choices:[
+        {t:"Let him have the fence. When the whistles stop: \u201CWant me to flag you before drills next time, so it's not a surprise?\u201D",tier:"good",fb:"You treated the noise as the problem, not Aiden. Space first, then an offer that fixes the environment going forward. That's what accommodation actually is: adjust the world, not the kid."},
+        {t:"Go sit with him and keep him company, chatting until he feels better.",tier:"mid",fb:"Kindly meant, but he left the pool to get less input, and you followed him with more. Company is something you offer (\u201Cwant company or space?\u201D), not something you apply. Sometimes support is standing back."},
+        {t:"Call over: \u201CYou were doing so great! Come back in, don't quit now!\u201D",tier:"miss",fb:"He didn't quit; he regulated. Coaxing someone back into the thing that's overloading them, however encouragingly, tells him his limits are a performance problem. The laps will still be there in five minutes."},
+        {t:"Tell the other guards to skip the whistle drills while Aiden's around.",tier:"mid",fb:"The instinct to reduce triggers is right, but quietly rewriting camp-wide procedure around him, without asking what he actually needs, turns him into a logistics problem instead of a person with a preference. Ask him first."}
+       ]},
+      {prompt:"A brand-new volunteer nods toward the deep end: \u201CWho's that doing laps?\u201D Three introductions come to mind.",
+       choices:[
+        {t:"\u201CThat's Aiden. Fastest kid in the pool. He'll tell you his lap times if you ask.\u201D",tier:"good",fb:"Notice what this one doesn't include: a diagnosis. The new volunteer asked who he is, and who he is starts with fastest kid in the pool. His autism isn't a secret, but it isn't the introduction either, and it isn't yours to hand out. If it becomes relevant, there's an aide and there's Aiden himself."},
+        {t:"\u201CThat's Aiden. He's autistic, but honestly really high-functioning.\u201D",tier:"mid",fb:"Meant as reassurance, and it smuggles in three problems: a diagnosis the volunteer didn't need, a \u201Cbut\u201D that treats autistic as bad news to soften, and \u201Chigh-functioning,\u201D a label that ranks people by how little their disability shows. Many autistic adults specifically ask people to drop it. Lead with the swimmer."},
+        {t:"\u201CThat's Aiden, one of our special needs kids. Sweet kid.\u201D",tier:"miss",fb:"Every word is gentle and the sentence still erases him. \u201CSpecial needs\u201D is a euphemism most disabled adults have asked to retire, \u201Cone of our\u201D files him into a category, and the swimming, the thing he was actually doing, never comes up. He's a person mid-lap, not a population."},
+        {t:"\u201CThat's Aiden. He's got an aide, Dana, over there if you need anything.\u201D",tier:"mid",fb:"Practically useful, and not unkind. But the first fact you handed a stranger about a 12-year-old was who manages him, not who he is. Lead with Aiden; mention Dana if it actually comes up."}
+       ]}
+    ],
+    close:"Aiden finishes his set, pops up, and tells you his lap time. He was counting. He didn't need a shadow. He needed a lifeguard, same as anyone.",
+    practiced:"Talk to the person, not their aide, even when going around them feels gentler."
+  },
+  {
+    id:"bball", stop:"Stop 4", activity:"Basketball", emoji:"🏀", color:"var(--teal)",
+    camper:"Jordan, 14", art:"bball",
+    intro:"Jordan, 14, talks trash before the whistle and means it. He has cerebral palsy and plays in a sport wheelchair. He's been shooting hoops since he could hold a ball, and he did not come here to be handed anything.",
+    beats:[
+      {prompt:"Pickup game, teams set. Jordan brings the ball up, and the defense backs way off to \u201Cgive him space.\u201D",
+       choices:[
+        {t:"Quietly tell your team to feed Jordan the ball every trip down the court.",tier:"mid",fb:"It looks like inclusion: he's involved every play. But forced touches aren't the same as being on the team, and everyone on that court can feel the difference, Jordan first. Inclusion he can smell being staged isn't inclusion. Run the offense; he'll get his."},
+        {t:"Tell the defense \u201Cplay him honest\u201D and let the game be a game.",tier:"good",fb:"Real defense means his buckets are actually his. Adapting the game (pace, spacing, room to maneuver) is fair. Handing him anything is charity dressed as sport, and he came to hoop."},
+        {t:"Wave everyone back further and call \u201Clet him get one!\u201D",tier:"miss",fb:"A basket everyone gifted him isn't a basket. It's a participation trophy with witnesses. Jordan can tell, and it stings worse than getting blocked ever would."},
+        {t:"Before the game, ask Jordan: \u201CWant your teammates to look for you more?\u201D",tier:"mid",fb:"Better than deciding for him; you asked. But you're the one who raised it, singling out his touches as a special question nobody else on the team gets. If it's strategy, let it be strategy, discussed the way any teammate's shot count would be."}
+       ]},
+      {prompt:"Jordan takes a hard foul on a layup and hits the floor. He's fine, already pushing himself back up.",
+       choices:[
+        {t:"Call it flagrant and pull the defender aside: \u201CYou've got to be careful with him.\u201D",tier:"mid",fb:"Protective, and it feels like advocacy. But \u201Ccareful with him\u201D just told both benches that Jordan is made of glass, and it took away the most normal thing that happened all game: a foul. He got hacked like a baller. Call it like one."},
+        {t:"\u201CYou good? Need anything?\u201D Then let him answer before you move.",tier:"good",fb:"You checked in and let him lead. If he wants a hand up, he'll say so. Treating a fall as a normal part of ball, not a catastrophe, is exactly what keeps it his game."},
+        {t:"Rush in and haul him upright before he can get his hands set.",tier:"miss",fb:"He was already up in his head. You just took the recovery away from him mid-move. The rescue reflex feels like care; uninvited, it's a takeover. Ask, don't haul."},
+        {t:"Wave the ref over: \u201CYou need to watch him closer, he's more vulnerable.\u201D",tier:"mid",fb:"The advocacy instinct is right, the target is wrong: you told the ref Jordan is fragile before Jordan said he needed anything. If the foul was dirty, call it dirty for anyone. Framing him as extra-breakable changes how the whole game treats him from here on."}
+       ]},
+      {prompt:"Between games, a teammate asks Jordan point-blank: \u201CSo what's up with your legs? Were you born like that?\u201D Jordan pauses.",
+       choices:[
+        {t:"Stay out of it. The question went to Jordan. He can answer it, dodge it, or roast the guy.",tier:"good",fb:"Direct, maybe even a little rude, but it was his to field. And honestly, a kid asking Jordan straight up beats a kid whispering to you about him. Jump in only if he looks to you for the assist."},
+        {t:"Jump in: \u201CDude, you can't just ask people that!\u201D",tier:"mid",fb:"You were defending him, but you also answered for him, made it awkward on his behalf, and announced to the whole court that his body is an off-limits topic. Jordan handles trash talk daily; he can handle a question. Let him."},
+        {t:"Answer for him. You know it's cerebral palsy, may as well explain.",tier:"miss",fb:"His medical history, narrated by you, while he sits right there. Even accurate, even well-meant, it's his story. He was one second away from telling whatever version of it he wanted to tell."},
+        {t:"Redirect the teammate: \u201CMaybe ask him about his handles instead.\u201D",tier:"mid",fb:"It comes from a good place, but you still decided, for Jordan, which questions about him are allowed, before he opened his mouth. He didn't need a redirect; he needed the floor."}
+       ]}
+    ],
+    close:"Jordan sinks both free throws, points at the guy who fouled him, and grins. He didn't want easy. He wanted a real game, so you gave him one.",
+    practiced:"Real inclusion is earned, not staged. And protection can be its own insult."
+  },
+  {
+    id:"smores", stop:"Stop 5", activity:"S'mores Night", emoji:"🔥", color:"var(--berry)",
+    camper:"Sam, 34", art:"smores",
+    intro:"Sam is 34, does IT for a school district, and has a system for s'mores: graham cracker down first, chocolate pre-broken into four squares, marshmallow rotated slowly over the coals, never the flame. Sam is autistic, does not rush the process, and the results are, frankly, better than yours.",
+    beats:[
+      {prompt:"Sam is turning the marshmallow slowly, taking a while. The line behind is growing.",
+       choices:[
+        {t:"Announce warmly, \u201CNo rush, Sam! Take all the time you need!\u201D",tier:"mid",fb:"You meant it as cover, permission even. But you just told the entire line, out loud, that Sam is the slow one. Public patience is still a spotlight. The kind version of this sentence is silence, plus solving the actual problem."},
+        {t:"Let Sam cook. If the line's real, quietly open a second roasting spot.",tier:"good",fb:"You protected Sam's process and fixed the logistics without ever making Sam the problem to be managed. Patience plus a practical move, zero spotlight. That's the whole skill."},
+        {t:"\u201CTell you what: I'll toast while you build. Teamwork!\u201D And reach for the stick.",tier:"miss",fb:"It's dressed up as collaboration, but nobody asked for a teammate. The roasting is the part Sam enjoys. You're not splitting the work; you're taking the good half. A line can wait ten seconds."},
+        {t:"Narrate the technique to the line: \u201CHe's doing the marshmallow rotation, it's a whole method!\u201D",tier:"mid",fb:"You're trying to build appreciation instead of impatience, a generous impulse. But Sam's private process just became a live demonstration for an audience he didn't sign up for. Solving the line doesn't require narrating the person."}
+       ]},
+      {prompt:"You put a hand up for a high-five over a perfect golden marshmallow. Sam leans back from it.",
+       choices:[
+        {t:"Switch to a fist bump, then a wave, then finger guns, until something lands.",tier:"mid",fb:"You're trying to be flexible, which is sweet, but cycling through gestures is just re-asking a question Sam already answered. The lean-back was a complete sentence. Accommodating someone means taking the first no, not negotiating it."},
+        {t:"Drop the hand, easy: \u201CNice one either way.\u201D",tier:"good",fb:"You read the no and honored it instantly, no production. Not everyone wants to be touched. A boundary respected fast, without commentary, is dignity in its most concentrated form."},
+        {t:"Ask, genuinely curious and a bit loud: \u201COh, you don't do high-fives?\u201D",tier:"miss",fb:"The curiosity is sincere, but you just converted a quiet boundary into a group discussion topic with Sam at the center. Boundaries don't need to be explained to be honored. Just let it be."},
+        {t:"Skip it now, but mention it later: \u201CI noticed you're not really a high-five person, totally cool.\u201D",tier:"mid",fb:"You correctly stopped in the moment, and circling back seems thoughtful. But raising it again turns a boundary that was already fully resolved into a topic, which is more attention than it needed. Once honored, let it stay closed."}
+       ]},
+      {prompt:"Rain. Staff announce the campfire is moving to the indoor fire pit, and everyone scrambles. Sam stays seated, gripping the roasting stick, not moving.",
+       choices:[
+        {t:"Give it a beat, then come over with specifics: \u201CIndoor pit's already lit. Same setup. I've got your spot. Come whenever you're ready.\u201D",tier:"good",fb:"A plan just shattered. What rebuilds it is concrete information and time, not pressure. You made the new situation predictable and left the timing with Sam. Textbook."},
+        {t:"Put a gentle hand on Sam's shoulder and steer: \u201CCome on, we'll walk together.\u201D",tier:"mid",fb:"Reassuring in intent, but it adds uninvited touch and a countdown to someone already at capacity. The warmth is right. Deliver it with words and patience, hands to yourself."},
+        {t:"Call to the group: \u201CHang on, someone help Sam get inside!\u201D",tier:"miss",fb:"Now everyone is watching the one person who needed a minute. A logistics wrinkle just became a public event with Sam at the center. Quiet, one-on-one, specific. That's the move."},
+        {t:"Text Sam's emergency contact to give a heads up, since he seems overwhelmed.",tier:"mid",fb:"Feels responsible, but escalating a routine schedule change to an emergency contact treats a 34-year-old adult needing a minute like a crisis requiring outside notification. That's a real overreach for a rain delay."}
+       ]}
+    ],
+    close:"Sam assembles the s'more, grahams squared, chocolate melting exactly right, and hands you one. \u201CThis is how you do it.\u201D Turns out the slow way was the right way.",
+    practiced:"Give people their pace, and take the first no."
+  },
+  {
+    id:"dining", stop:"Stop 6", activity:"Dining Hall", emoji:"🌮", color:"var(--sage)",
+    camper:"Priya, 29", art:"dining",
+    intro:"Priya, 29, manages the front desk at a vet clinic and has opinions about everything, especially food. She's nonverbal and talks with a tablet: tap, tap, and the voice says exactly what she means. It's taco day, and she has thoughts.",
+    beats:[
+      {prompt:"In the lunch line, the server looks past Priya to you: \u201CWhat does she want?\u201D",
+       choices:[
+        {t:"Order her the tacos you know she loves. The line's long; no need to make her deal with it.",tier:"mid",
+         delayed:{scene:"She takes the tacos. They're her favorite; you weren't wrong. Lunch moves along, quick and painless.",
+         reveal:"At dessert, the server asks the table what everyone's having. Priya doesn't reach for her tablet. Why would she? Someone always answers first. You watched a 29-year-old woman opt out of her own voice, because being right about the tacos taught her that her answer wasn't needed. Efficient isn't the same as kind."},
+         fb:"Ordering for her is fast and you even get it right, which is what makes it slippery. The harm isn't the tacos; it's what being spoken for, again, teaches her to expect. That lesson surfaces later, not now."},
+        {t:"Look at Priya: \u201CThey're asking what you'd like.\u201D",tier:"good",fb:"You handed the question back to the person it belongs to. She'll tap her answer. Your job was to make sure she got asked, not to be her voice."},
+        {t:"\u201CGive her a little of everything. She's easy.\u201D",tier:"miss",fb:"She is, in fact, extremely not easy. She has more food opinions than anyone at this table, and a device to state them. Guessing on someone's behalf erases their actual preferences, cheerfully."},
+        {t:"Ask the server to wait, and hand Priya the menu to point at.",tier:"mid",fb:"Better than answering for her, and it puts a choice in her hands. But she has a tablet that speaks in full sentences; handing her a menu instead assumes a simpler tool than the one she actually uses to talk. Let her use her own voice, not a workaround for it."}
+       ]},
+      {prompt:"At the table, Priya taps out: \u201Ccoffee. black.\u201D Another volunteer leans over and whispers to you, \u201CWait, is she allowed to have coffee?\u201D",
+       choices:[
+        {t:"Say you'll double-check with the staff first, just to be safe.",tier:"mid",fb:"It feels responsible. When in doubt, ask, right? But notice what you'd be asking: whether a 29-year-old woman has permission to drink coffee. Unless there's an actual dietary plan you've been told about, \u201Cchecking\u201D treats her adulthood as conditional. The doubt itself was the mistake to correct."},
+        {t:"Answer at normal volume, \u201CShe's 29. She ordered coffee.\u201D Then go get the coffee.",tier:"good",fb:"You answered the whisper without whispering, put her age back in the room, and treated her order like an order. Adults don't need permission for coffee. Sometimes dignity is just refusing to lower your voice."},
+        {t:"Skip the debate. Bring her a decaf and don't mention it.",tier:"miss",fb:"The quietest option, and the most undermining: you overrode an adult's explicit choice in secret, \u201Cfor her own good.\u201D She said black coffee. A hidden veto is still a veto; it just adds dishonesty."},
+        {t:"Tell the whisperer, \u201CLet's just get her decaf, she won't notice.\u201D",tier:"mid",fb:"Close to the miss answer in effect, since her order still gets changed without telling her. But saying it out loud instead of doing it silently at least keeps you honest with yourself, even as you're dishonest with her. Still a deception. Get the coffee she ordered."}
+       ]},
+      {prompt:"A curious kid leans across the table toward Priya's tablet. \u201CWhoa, what's that? Can I play with it?\u201D Fingers already reaching.",
+       choices:[
+        {t:"\u201CThat's Priya's voice. You wouldn't grab someone's mouth. Ask her; she might show you.\u201D",tier:"good",fb:"Exactly the right frame: the tablet isn't a gadget, it's how she talks. You protected it, kept it hers to share, and turned the kid's grabbing into an actual introduction."},
+        {t:"Pick it up and show the kid how it works. Priya won't mind.",tier:"mid",fb:"You just handled someone's voice to entertain a third party. Even friendly, even briefly. Imagine someone lending out your mouth. Her device, her demo, her call."},
+        {t:"Chuckle and let the kid tap around on it for a second.",tier:"miss",fb:"It looks harmless, and it treats the thing she speaks with as a toy that others may use without asking. If the kid clears her phrase bank, that's her words, gone. The tablet is off-limits, full stop."},
+        {t:"Tell the kid, \u201CMaybe later, when Priya says it's okay.\u201D",tier:"mid",fb:"Better than letting the kid touch it now, and it does name Priya as the one who decides. But \u201Cmaybe later\u201D never actually asks her, and leaves the door open for the kid to just try again in five minutes. If it's her call, get her answer now, not a vague someday."}
+       ]}
+    ],
+    close:"Priya taps once more: \u201Cthanks.\u201D Then, a beat later: \u201Cyou're less annoying than the last guy.\u201D High praise. You listened at her speed and took her at her word. That's all it took.",
+    practiced:"Adults don't need permission. And don't speak for people who can speak for themselves."
+  }
+];
+
+/* ================= CHECK-IN / CHECK-OUT ================= */
+const CHECKS = {
+base:[
+ {q:"A camper you've never met, Devon, is having trouble with a jammed tent zipper and mutters, half to himself, \u201Cugh, come on.\u201D You're passing by.",
+  short:"Overheard is not the same as asked.",
+  key:"Frustration voiced to oneself isn't a request for help. \u201CWant a hand?\u201D respects that it might be; jumping in, or hovering to see if he'll ask, both decide for him that this small struggle is yours to resolve.",
+  opts:[
+   {t:"\u201CWant a hand with that?\u201D and keep walking if he says no.",tier:"good"},
+   {t:"Crouch down and start working the zipper with him.",tier:"mid"},
+   {t:"Hang back a few feet in case he looks up for help.",tier:"mid"},
+   {t:"\u201CHere, those zippers are the worst,\u201D and take it from him.",tier:"miss"}]},
+ {q:"Priya uses a communication tablet. She taps out an answer to your question, and it comes out in the tablet's flat robotic voice. You want her to feel heard.",
+  short:"Respond to the words, not the voice.",
+  key:"The dignifying move is to react to what she said exactly as you would to anyone, no extra warmth for the fact that she used a device. Praising her for communicating, or mirroring back that you understood, both treat using her own voice as an achievement rather than a given.",
+  opts:[
+   {t:"Answer what she said, the same way you'd answer anyone.",tier:"good"},
+   {t:"\u201CYes! Great, thank you for telling me!\u201D with extra warmth.",tier:"mid"},
+   {t:"Repeat her answer back to confirm you understood it.",tier:"mid"},
+   {t:"Look to the person next to her to check you got it right.",tier:"miss"}]},
+ {q:"An adult camper, Ray, tells you flatly that he doesn't want to do the group hike today, no reason given. The schedule says everyone hikes.",
+  short:"An adult's no is a reason by itself.",
+  key:"Ray declining doesn't require a justification you find acceptable. Coaxing, negotiating, or looping in staff to persuade him all treat his stated choice as a problem to be managed. Note it, offer the alternative, respect it.",
+  opts:[
+   {t:"\u201COkay. There's shade and cards back at the cabin if you'd rather.\u201D",tier:"good"},
+   {t:"\u201CCome on, just try the first ten minutes and see?\u201D",tier:"mid"},
+   {t:"Gently ask why, so you can help solve whatever's wrong.",tier:"mid"},
+   {t:"Tell staff Ray is refusing to participate.",tier:"miss"}]},
+ {q:"You're introducing your friend Sam, who is autistic, to a new volunteer before an activity. The volunteer will be working with Sam all afternoon.",
+  short:"Lead with the person; share access needs, not labels.",
+  key:"What actually helps the volunteer is how to work well with Sam, framed as Sam's own preferences. Opening with a diagnosis, even to be helpful, files him under a category before he's a person, and \u201Chigh-functioning\u201D ranks him by how little he needs.",
+  opts:[
+   {t:"\u201CThis is Sam. He likes clear steps and a heads-up before changes.\u201D",tier:"good"},
+   {t:"\u201CThis is Sam. He's autistic, so just so you know going in.\u201D",tier:"mid"},
+   {t:"\u201CThis is Sam, he's great, super high-functioning, you'll be fine.\u201D",tier:"mid"},
+   {t:"Quietly brief the volunteer about Sam's diagnosis out of earshot.",tier:"miss"}]},
+ {q:"A camper who uses a wheelchair, Maya, is rolling up a long ramp and is clearly working hard at it, breathing heavy. You're walking beside her.",
+  short:"Effort is not distress.",
+  key:"Working hard at something isn't a signal that she needs rescuing; it's just her doing the thing. Pushing without asking touches her chair uninvited, and \u201Cyou've got this!\u201D turns her ordinary effort into a performance she didn't ask you to narrate.",
+  opts:[
+   {t:"Walk alongside and talk about whatever you were talking about.",tier:"good"},
+   {t:"\u201CYou've got this, almost there!\u201D as encouragement.",tier:"mid"},
+   {t:"Slow your pace and keep glancing over to check she's okay.",tier:"mid"},
+   {t:"Step behind and give the chair a helpful push up the ramp.",tier:"miss"}]},
+ {q:"At lunch, a camper named Theo is telling you a long story and gets a clear detail wrong (he says the movie came out last year; it was five years ago). It doesn't matter to the story.",
+  short:"Correcting the irrelevant is its own condescension.",
+  key:"You'd let any friend's harmless mistake slide inside a good story. Correcting a detail that doesn't affect anything, however gently, signals you're monitoring him for errors rather than listening. Just stay in the story.",
+  opts:[
+   {t:"Keep listening and react to the story he's actually telling.",tier:"good"},
+   {t:"\u201COh, I think that one was a few years back, but yeah!\u201D",tier:"mid"},
+   {t:"Nod along but make a mental note to correct it later.",tier:"mid"},
+   {t:"\u201CActually it was five years ago,\u201D then let him continue.",tier:"miss"}]},
+ {q:"A camper, Nia, whose speech takes effort to produce, is answering a yes-or-no question from a staffer. Two seconds in, the staffer looks to you as if to say \u201Ca little help?\u201D",
+  short:"Backing her up means not stepping in.",
+  key:"The help she needs is time, and the help the staffer needs is to keep waiting. Answering for her, or nudging her to hurry, both end her turn early. Holding the staffer's glance and letting the pause run is the advocacy.",
+  opts:[
+   {t:"Hold the staffer's glance and keep waiting with her.",tier:"good"},
+   {t:"\u201CTake your time, no rush,\u201D to fill the silence.",tier:"mid"},
+   {t:"Softly repeat the question in case she lost it.",tier:"mid"},
+   {t:"Give the staffer the answer you're fairly sure she means.",tier:"miss"}]}
+]};
+
+/* ================= STATE ================= */
+const state = { done:new Set(), scenario:null, beat:0, locked:false, baseline:[], retake:[], retakeDone:false };
+const app = document.getElementById('app');
+const scrollTop = ()=>window.scrollTo({top:0,behavior:'smooth'});
+
+/* ================= SCREENS ================= */
+function screenWelcome(){
+  app.innerHTML = `
+    <div class="hero pop">
+      ${HERO_ART}
+      <div class="eyebrow">CAMP Volunteer Training</div>
+      <h1>The Trail</h1>
+      <p class="tag">Six camp activities and six friends. One thing to learn at each stop: how to show up with dignity instead of guessing and hoping.</p>
+      <div class="cta-row">
+        <button class="btn" id="start">Start the trail</button>
+        <button class="btn ghost" id="skip">Skip to the map</button>
+      </div>
+      <div class="meta">About 20 minutes · works on your phone · no login</div>
+    </div>
+    <div class="note rise-in">
+      <span style="font-size:22px">🧭</span>
+      <div>This is a <b>guide, not a test</b>. Fair warning: most of the wrong answers here <b>look like helping</b>. That's the point. The campers are made up; the situations are real. Before this trains anyone for real, it should be read by CAMP participants, families, and self-advocates: the people it's actually about.</div>
+    </div>`;
+  document.getElementById('start').onclick=()=>{screenCheck('baseline');scrollTop();};
+  document.getElementById('skip').onclick=()=>{screenHub();scrollTop();};
+}
+
+function screenPrimer(){
+  app.innerHTML = `
+    <div class="section-head">
+      <div class="eyebrow">Before you hit the trail</div>
+      <h2>Four things to carry the whole way</h2>
+      <p>Every scenario is going to need one of the four. Keep them in your backpack.</p>
+    </div>
+    <div class="principles">
+      ${PRINCIPLES.map(p=>`
+        <div class="principle">
+          <div class="em">${p.em}</div>
+          <div><h3>${p.h}</h3><p>${p.p}</p></div>
+        </div>`).join('')}
+    </div>
+    <div class="cta-row" style="margin-top:26px">
+      <button class="btn teal" id="toMap">Head to the map →</button>
+    </div>`;
+  document.getElementById('toMap').onclick=()=>{screenHub();scrollTop();};
+}
+
+function screenCheck(kind){
+  const items=CHECKS.base; const isBase=kind==='baseline';
+  let idx=0; const picks=[];
+  function draw(){
+    const it=items[idx];
+    const ord=shuffledOrder(it.opts.length);
+    app.innerHTML=`
+      <div class="section-head">
+        <div class="eyebrow">${isBase?'Baseline check':'The retake'}</div>
+        <h2>${isBase?'Seven questions before you start':'The same seven, one more time'}</h2>
+        <p>${isBase?'No feedback on these, and some are deliberately close calls. Just answer the way you honestly would today. You\u2019ll face these exact seven again at the end.':'These are the same seven you started with. Answer them fresh, then we\u2019ll compare.'}</p>
+      </div>
+      <div class="scene-card rise-in"><div class="scene-body">
+        <div class="beat-count">Question ${idx+1} of ${items.length}</div>
+        <div class="prompt">${it.q}</div>
+        <div class="choices">
+          ${ord.map(i=>`<button class="choice" data-i="${i}">${it.opts[i].t}</button>`).join('')}
+        </div>
+      </div></div>`;
+    app.querySelectorAll('.choice').forEach(b=>{
+      b.onclick=()=>{
+        picks.push(it.opts[parseInt(b.dataset.i)].tier);
+        idx++;
+        if(idx<items.length){ draw(); scrollTop(); }
+        else{
+          if(isBase){ state.baseline=picks; screenPrimer(); }
+          else{ state.retake=picks; state.retakeDone=true; screenResults(); }
+          scrollTop();
+        }
+      };
+    });
+  }
+  draw();
+}
+
+function screenResults(){
+  const base=state.baseline||[], re=state.retake||[];
+  const n=CHECKS.base.length;
+  const bs=base.filter(t=>t==='good').length;
+  const rs=re.filter(t=>t==='good').length;
+  let line;
+  if(!base.length) line=`Retake score: <b>${rs} / ${n}</b>.`;
+  else if(rs>bs) line=`Baseline <b>${bs}/${n}</b> → retake <b>${rs}/${n}</b>. That gap is the trail working.`;
+  else if(rs===bs && rs===n) line=`<b>${rs}/${n}</b> both times. You came in sharp and you left sharp.`;
+  else if(rs===bs) line=`<b>${bs}/${n}</b> → <b>${rs}/${n}</b>. Same score. The reads below show which ones are still worth sitting with.`;
+  else line=`<b>${bs}/${n}</b> → <b>${rs}/${n}</b>. It slipped. Usually that means the close calls got harder to see once you knew they were close. Read the reads, walk a stop again.`;
+
+  const rows = CHECKS.base.map((it,i)=>{
+    const b=base[i], r=re[i];
+    let mark, note='';
+    if(b==='good' && r==='good'){ mark='✓'; note='held'; }
+    else if(b!=='good' && r==='good'){ mark='▲'; note='baseline → dignified'; }
+    else if(b==='good' && r!=='good'){ mark='▼'; note='dignified → slipped'; }
+    else { mark='↺'; note='still worth revisiting'; }
+    return `<div class="rule"><div class="n">${mark}</div><div><b>${it.short}</b> ${it.key} <em style="color:var(--ink-soft)">(${note})</em></div></div>`;
+  }).join('');
+
+  app.innerHTML=`
+    <div class="wrap-hero pop">
+      <div style="font-size:44px">🧭</div>
+      <div class="eyebrow">Baseline vs. retake</div>
+      <h2>How your read changed</h2>
+      <p class="tag" style="margin-top:12px;color:var(--ink-soft);font-weight:600">${line}</p>
+    </div>
+    <div class="card-print">
+      <h3>The seven, and the dignified read</h3>
+      <div class="rulelist">${rows}</div>
+    </div>
+    <div class="note"><span style="font-size:22px">📸</span><div>If your chapter tracks completions, <b>screenshot this screen</b> and send it to your coordinator. The baseline-to-retake shift is the part worth recording.</div></div>
+    <div class="cta-row" style="margin-top:24px">
+      <button class="btn teal" id="toWrap">See the trail summary →</button>
+    </div>`;
+  document.getElementById('toWrap').onclick=()=>{screenWrap();scrollTop();};
+}
+
+function screenHub(){
+  const total=SCENARIOS.length, done=state.done.size;
+  const allDone = done===total;
+  const fillPct = total>1 ? (done===0?0:Math.min(100,(done-0.5)/(total-1)*100)) : 0;
+  app.innerHTML = `
+    <div class="section-head">
+      <div class="eyebrow">The camp map</div>
+      <h2>Pick a stop</h2>
+    </div>
+    <div class="progress-note">${done} of ${total} stops walked${allDone?". The whole trail. Nice.":""}</div>
+    <div class="trail" id="trail">
+      <div class="rail"></div>
+      <div class="rail-fill" id="railfill"></div>
+      <div class="hiker" id="hiker" aria-hidden="true">🥾</div>
+      ${SCENARIOS.map(s=>{
+        const isDone=state.done.has(s.id);
+        return `
+        <div class="station ${isDone?'done':''}" style="--mk:${s.color}">
+          <button class="card" data-id="${s.id}" style="--mk:${s.color}">
+            <div class="stop">${s.stop}</div>
+            <h3>${s.activity}</h3>
+            <div class="who">with ${s.camper}</div>
+            ${isDone?`<span class="badge-done">✓ Walked it</span>`:''}
+          </button>
+          <div class="marker" aria-hidden="true">${isDone?'✓':s.emoji}</div>
+        </div>`;
+      }).join('')}
+    </div>
+    <div class="finish-row">
+      <button class="btn ${allDone?'':'ghost'}" id="finish">${state.retakeDone ? 'See your trail summary →' : 'Finish: retake the seven →'}</button>
+    </div>`;
+  app.querySelectorAll('.card[data-id]').forEach(b=>{
+    b.onclick=()=>{openScenario(b.dataset.id);scrollTop();};
+  });
+  document.getElementById('finish').onclick=()=>{
+    if(!state.retakeDone){ screenCheck('retake'); } else { screenWrap(); }
+    scrollTop();
+  };
+  // position hiker + fill after layout
+  requestAnimationFrame(()=>{
+    const trail=document.getElementById('trail');
+    const stations=[...trail.querySelectorAll('.station')];
+    let idx=-1;
+    SCENARIOS.forEach((s,i)=>{ if(state.done.has(s.id)) idx=i; });
+    const hiker=document.getElementById('hiker');
+    const fill=document.getElementById('railfill');
+    const tRect=trail.getBoundingClientRect();
+    if(idx<0){
+      hiker.style.setProperty('--hike','26px');
+      fill.style.setProperty('--fill','0px');
+    }else{
+      const m=stations[idx].querySelector('.marker').getBoundingClientRect();
+      const y=(m.top+m.height/2)-tRect.top;
+      hiker.style.setProperty('--hike',(y+ (idx===SCENARIOS.length-1?0:52))+'px');
+      fill.style.height=(y-20)+'px';
+    }
+  });
+}
+
+function openScenario(id){
+  state.scenario=SCENARIOS.find(s=>s.id===id);
+  state.beat=0; state.locked=false; state.order=null; state.orderBeat=-1;
+  renderScenario();
+}
+
+function renderScenario(){
+  const s=state.scenario, b=state.beat;
+  const showClose = b>=s.beats.length;
+  app.innerHTML = `
+    <div class="scene-top">
+      <button class="backlink" id="back">← Map</button>
+      <span class="scene-chip" style="--chip:${s.color}">${s.activity}</span>
+    </div>
+    <div class="scene-card rise-in">
+      ${ART[s.art]||''}
+      <div class="scene-body">
+        <div class="meet">
+          <div class="av" style="--chip:${s.color}">${s.emoji}</div>
+          <div><div class="eyebrow">Meet</div><h2>${s.camper}</h2></div>
+        </div>
+        <div class="intro">${s.intro}</div>
+        <div id="beatzone"></div>
+      </div>
+    </div>`;
+  document.getElementById('back').onclick=()=>{screenHub();scrollTop();};
+  if(showClose){ renderClose(); } else { renderBeat(); }
+}
+
+function shuffledOrder(n){
+  const a=[...Array(n).keys()];
+  for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}
+  return a;
+}
+
+function renderBeat(){
+  const s=state.scenario, beat=s.beats[state.beat];
+  if(!state.order || state.orderBeat!==state.beat){
+    state.order=shuffledOrder(beat.choices.length);
+    state.orderBeat=state.beat;
+    state.wrongCount=0;
+  }
+  const zone=document.getElementById('beatzone');
+  zone.innerHTML = `
+    <div class="beat-count">Moment ${state.beat+1} of ${s.beats.length}</div>
+    <div class="prompt">${beat.prompt}</div>
+    <div class="choices">
+      ${state.order.map(i=>`<button class="choice" data-i="${i}">${beat.choices[i].t}</button>`).join('')}
+    </div>
+    <div id="fb" aria-live="polite"></div>`;
+  state.locked=false;
+  zone.querySelectorAll('.choice').forEach(btn=>{
+    btn.onclick=()=>pickChoice(parseInt(btn.dataset.i));
+  });
+}
+
+function optionBreakdown(beat, chosenIndex){
+  const label = {good:"Dignified", mid:"Well-meant, but costly", miss:"Undermining"};
+  const dot = {good:"✓", mid:"◐", miss:"✕"};
+  const order = state.order || [...Array(beat.choices.length).keys()];
+  const rows = order.map(idx=>{
+    const c=beat.choices[idx];
+    const picked = idx===chosenIndex;
+    const txt = c.fb && c.fb.length ? c.fb : (c.delayed ? "See what unfolds below. This looked harmless in the moment, which is exactly why it's worth watching play out." : "");
+    return `<div class="opt-row ${c.tier} ${picked?'picked':''}">
+        <div class="opt-tag">${dot[c.tier]} ${label[c.tier]}${picked?' · your pick':''}</div>
+        <div class="opt-quote">${c.t}</div>
+        <div class="opt-why">${txt}</div>
+      </div>`;
+  }).join('');
+  return `<div class="breakdown"><div class="bd-head">Every option, and why</div>${rows}</div>`;
+}
+
+function pickChoice(i){
+  if(state.locked) return;
+  const s=state.scenario, beat=s.beats[state.beat], choice=beat.choices[i];
+  const zone=document.getElementById('beatzone');
+  const btns=zone.querySelectorAll('.choice');
+  btns.forEach(bn=>bn.disabled=true);
+  const chosen=btns[i];
+  const cls = choice.tier==='good'?'pick-good':(choice.tier==='mid'?'pick-mid':'pick-miss');
+  chosen.classList.add(cls);
+  chosen.disabled=false;
+  state.locked=true;
+  const fb=document.getElementById('fb');
+  const last = state.beat>=s.beats.length-1;
+
+  const advanceBtn = `<button class="btn ${last?'teal':''}" id="next">${last?'Finish this stop →':'Next moment →'}</button>`;
+
+  /* delayed-consequence path: counts as a wrong strike; scene, later reveal, then breakdown */
+  if(choice.delayed){
+    state.wrongCount = (state.wrongCount||0) + 1;
+    const canAdvance = state.wrongCount >= 2;
+    fb.innerHTML = `
+      <div class="feedback neutral">
+        <div class="fb-head">The moment passes</div>
+        <div>${choice.delayed.scene}</div>
+        <div class="fb-actions"><button class="btn ghost" id="cont">Continue →</button></div>
+      </div>`;
+    document.getElementById('cont').onclick=()=>{
+      fb.innerHTML = `
+        <div class="later">
+          <div class="fb-head">⏰ A little while later…</div>
+          <div>${choice.delayed.reveal}</div>
+        </div>
+        ${canAdvance ? optionBreakdown(beat, i) : ''}
+        <div class="fb-actions">
+          <button class="btn ghost" id="retry">← ${canAdvance?'Try the dignified one':'Try again'}</button>
+          ${canAdvance ? advanceBtn : ''}
+        </div>`;
+      document.getElementById('retry').onclick=()=>{ renderBeat(); };
+      const nx=document.getElementById('next');
+      if(nx) nx.onclick=()=>{ state.beat++; renderScenario(); scrollTop(); };
+    };
+    return;
+  }
+
+  const heads = {
+    good:"✓ That's the dignified move",
+    mid:"◐ Well-meant, and here's the cost",
+    miss:"✕ Kind-looking, but it undermines"
+  };
+
+  if(choice.tier==='good'){
+    /* correct pick, any attempt: full breakdown, advance */
+    fb.innerHTML = `
+      <div class="feedback good">
+        <div class="fb-head">${heads.good}</div>
+        <div>${choice.fb}</div>
+      </div>
+      ${optionBreakdown(beat, i)}
+      <div class="fb-actions">${advanceBtn}</div>`;
+    document.getElementById('next').onclick=()=>{ state.beat++; renderScenario(); scrollTop(); };
+    return;
+  }
+
+  /* wrong pick */
+  state.wrongCount = (state.wrongCount||0) + 1;
+
+  if(state.wrongCount < 2){
+    /* first wrong: explain only this one, send them back to try again */
+    fb.innerHTML = `
+      <div class="feedback ${choice.tier==='miss'?'miss':'mid'}">
+        <div class="fb-head">${heads[choice.tier]}</div>
+        <div>${choice.fb}</div>
+      </div>
+      <div class="fb-actions"><button class="btn ghost" id="retry">← Try again</button></div>`;
+    document.getElementById('retry').onclick=()=>{ renderBeat(); };
+    return;
+  }
+
+  /* second wrong: explain this one, then reveal the full breakdown; allow moving on */
+  fb.innerHTML = `
+    <div class="feedback ${choice.tier==='miss'?'miss':'mid'}">
+      <div class="fb-head">${heads[choice.tier]}</div>
+      <div>${choice.fb}</div>
+    </div>
+    ${optionBreakdown(beat, i)}
+    <div class="fb-actions">
+      <button class="btn ghost" id="retry">← Try the dignified one</button>
+      ${advanceBtn}
+    </div>`;
+  document.getElementById('retry').onclick=()=>{ renderBeat(); };
+  document.getElementById('next').onclick=()=>{ state.beat++; renderScenario(); scrollTop(); };
+}
+
+function renderClose(){
+  const s=state.scenario;
+  state.done.add(s.id);
+  const zone=document.getElementById('beatzone');
+  zone.innerHTML = `
+    <div class="close-beat">${s.close}</div>
+    <div class="practiced">
+      <div class="em">🎒</div>
+      <div>You practiced: <b>${s.practiced}</b></div>
+    </div>
+    <div class="cta-row" style="margin-top:20px;justify-content:flex-start">
+      <button class="btn teal" id="backMap">Back to the map →</button>
+    </div>`;
+  document.getElementById('backMap').onclick=()=>{screenHub();scrollTop();};
+}
+
+function screenWrap(){
+  const done=state.done.size, total=SCENARIOS.length;
+  const allBadges = done===total;
+  const n=CHECKS.base.length;
+  const hasScores = state.retakeDone && state.baseline.length;
+  const bs=(state.baseline||[]).filter(t=>t==='good').length;
+  const rs=(state.retake||[]).filter(t=>t==='good').length;
+  const delta=rs-bs;
+  let scoreLine='';
+  if(hasScores){
+    if(delta>0) scoreLine=`Baseline <b>${bs}/${n}</b> → retake <b>${rs}/${n}</b>. Up ${delta}. That climb is the trail working.`;
+    else if(delta===0 && rs===n) scoreLine=`<b>${rs}/${n}</b> both times. You came in sharp and left sharp.`;
+    else if(delta===0) scoreLine=`<b>${bs}/${n}</b> → <b>${rs}/${n}</b>. Held steady. The close calls are worth another look someday.`;
+    else scoreLine=`Baseline <b>${bs}/${n}</b> → retake <b>${rs}/${n}</b>. It dipped, which usually means you started second-guessing the easy ones. Worth a rewalk.`;
+  }
+  app.innerHTML = `
+    <div class="wrap-hero pop">
+      <div style="font-size:44px">🌇</div>
+      <div class="eyebrow">End of the trail</div>
+      <h2>${allBadges?'You walked the whole thing':'Good start on the trail'}</h2>
+      <p class="tag" style="margin-top:12px;color:var(--ink-soft);font-weight:600">${allBadges
+        ? 'Six stops, one idea underneath all of them: the camper, at any age, is a person first, and most mistakes look like helping. Now you can tell the difference.'
+        : `You've walked ${done} of ${total} stops. You can go back for the rest anytime; each takes about two minutes.`}</p>
+      ${hasScores ? `<div class="score-banner">${scoreLine}</div>` : ''}
+    </div>
+
+    <div class="card-print">
+      <h3>🖨️ The pocket version</h3>
+      <div class="rulelist">
+        <div class="rule"><div class="n">1</div><div><b>See the person first.</b> Athlete, artist, IT guy, coffee drinker: that comes before the disability, at every age.</div></div>
+        <div class="rule"><div class="n">2</div><div><b>Offer, don't impose.</b> Ask \u201Cwant a hand?\u201D, then honor the answer, including the first no.</div></div>
+        <div class="rule"><div class="n">3</div><div><b>Talk to the person.</b> Not their aide, not the staff, not over their head, even when going around them feels gentler.</div></div>
+        <div class="rule"><div class="n">4</div><div><b>Real, not staged.</b> Let people earn it and lead it. Gifted wins and forced touches fool nobody.</div></div>
+        <div class="rule"><div class="n">5</div><div><b>No spotlights.</b> Public patience, loud accommodation, and \u201Cbeing careful with him\u201D all single someone out. Fix logistics quietly.</div></div>
+        <div class="rule"><div class="n">6</div><div><b>Kind ≠ dignified.</b> The mistakes that matter look like helping. When in doubt: ask, wait, and take their answer.</div></div>
+      </div>
+    </div>
+
+    <div class="note no-print" style="margin-top:20px">
+      <span style="font-size:22px">💬</span>
+      <div>These scenarios are a starting point written from experience, not the final word. The most important review comes from <b>CAMP participants, their families, and self-advocates</b>. Their edits are what make this training actually theirs.</div>
+    </div>
+
+    <div class="cta-row no-print" style="margin-top:24px">
+      <button class="btn" onclick="window.print()">Print the pocket version</button>
+      <button class="btn ghost" id="restart">Back to the map</button>
+    </div>`;
+  document.getElementById('restart').onclick=()=>{screenHub();scrollTop();};
+}
+
+/* ================= BOOT ================= */
+screenWelcome();
+</script>
+</body>
+</html>
