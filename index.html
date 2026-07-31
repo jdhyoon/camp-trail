@@ -204,6 +204,11 @@
   .wrap-hero{text-align:center;padding:32px 24px;background:linear-gradient(180deg,#FFF7E9,#FFEFD6);border:1px solid var(--line);border-radius:var(--r-lg);box-shadow:var(--shadow);position:relative;overflow:hidden}
   .score-banner{margin:20px auto 0;max-width:44ch;background:#fff;border:2px solid var(--teal);border-radius:var(--r-md);padding:14px 18px;font-size:16px;font-weight:700;color:var(--ink);box-shadow:var(--shadow-sm)}
   .score-banner b{color:var(--teal-deep)}
+  .res-attempts{display:flex;flex-wrap:wrap;gap:12px;margin:6px 0 8px}
+  .res-attempt{font-size:13px;font-weight:700;color:var(--ink-soft)}
+  .res-tag{display:inline-block;padding:2px 9px;border-radius:999px;font-size:12px;font-weight:800;margin-left:4px}
+  .res-tag.ok{background:var(--good-bg,#E7F3EC);color:var(--good,#2E8B57)}
+  .res-tag.bad{background:var(--miss-bg,#FBE7E0);color:var(--miss,#C24A2E)}
   .wrap-hero:before{content:"";position:absolute;left:0;right:0;top:0;height:8px;background:linear-gradient(90deg,var(--marigold),var(--coral),var(--berry),var(--sky),var(--teal),var(--sage))}
   .wrap-hero h2{font-size:clamp(28px,6vw,40px);font-weight:700}
   .card-print{background:var(--card);border:1px solid var(--line);border-radius:var(--r-lg);box-shadow:var(--shadow-sm);padding:26px 24px;margin-top:20px}
@@ -328,7 +333,7 @@ base:[{"q": "Devon, a camper you've never met, is having trouble with a jammed t
 
 /* ================= STATE ================= */
 /* Feedback form shown on the final summary screen. To change it, paste a new link here. */
-const GOOGLE_FORM_URL = "https://forms.gle/ri6n6ej6GodZPP1i6";
+const GOOGLE_FORM_URL = "https://forms.gle/uTAMXj4AudUdcbjh6";
 
 const state = { done:new Set(), scenario:null, beat:0, locked:false, baseline:[], retake:[], retakeDone:false };
 const app = document.getElementById('app');
@@ -350,7 +355,7 @@ function screenWelcome(){
     </div>
     <div class="note rise-in">
       <span style="font-size:22px">🧭</span>
-      <div>This is a <b>guide, not a test</b>. Fair warning: most of the wrong answers here <b>look like helping</b>. That's the point. The campers are made up; the situations are real. Before this trains anyone for real, it should be read by CAMP participants, families, and self-advocates: the people it's actually about.</div>
+      <div>This is a <b>guide, not a test</b>. The campers are made up, but the situations are scenarios that are capable of occurring during CAMP. The seven questions at the start and end each have a <b>1 minute and 30 second timer</b>, so read the details and answer before time runs out. Good luck on the trail!</div>
     </div>`;
   document.getElementById('start').onclick=()=>{screenCheck('baseline');scrollTop();};
   document.getElementById('skip').onclick=()=>{screenHub();scrollTop();};
@@ -378,7 +383,7 @@ function screenPrimer(){
 
 function screenCheck(kind){
   const items=CHECKS.base; const isBase=kind==='baseline';
-  let idx=0; const picks=[]; let timerId=null; const LIMIT=75;
+  let idx=0; const picks=[]; let timerId=null; const LIMIT=90;
   function finishQuestion(tier){
     if(timerId){ clearInterval(timerId); timerId=null; }
     picks.push(tier);
@@ -402,7 +407,7 @@ function screenCheck(kind){
       <div class="scene-card rise-in"><div class="scene-body">
         <div class="check-topline">
           <div class="beat-count">Question ${idx+1} of ${items.length}</div>
-          <div class="qtimer" id="qtimer">1:15</div>
+          <div class="qtimer" id="qtimer">1:30</div>
         </div>
         <div class="timer-bar"><div class="timer-fill" id="timerFill"></div></div>
         <div class="prompt">${it.q}</div>
@@ -442,17 +447,28 @@ function screenResults(){
   if(!base.length) line=`Retake score: <b>${rs} / ${n}</b>.`;
   else if(rs>bs) line=`Baseline <b>${bs}/${n}</b> → retake <b>${rs}/${n}</b>. That gap is the trail working.`;
   else if(rs===bs && rs===n) line=`<b>${rs}/${n}</b> both times. You came in sharp and you left sharp.`;
-  else if(rs===bs) line=`<b>${bs}/${n}</b> → <b>${rs}/${n}</b>. Same score. The reads below show which ones are still worth sitting with.`;
-  else line=`<b>${bs}/${n}</b> → <b>${rs}/${n}</b>. It slipped. Usually that means the close calls got harder to see once you knew they were close. Read the reads, walk a stop again.`;
+  else if(rs===bs) line=`<b>${bs}/${n}</b> → <b>${rs}/${n}</b>. Same score. The explanations below show which ones are still worth sitting with.`;
+  else line=`<b>${bs}/${n}</b> → <b>${rs}/${n}</b>. It slipped. Usually that means the close calls got harder to see once you knew they were close. Read the explanations carefully, walk a stop again.`;
 
+  const tag = (tier)=>{
+    if(tier==='good') return `<span class="res-tag ok">correct</span>`;
+    if(tier==='timeout') return `<span class="res-tag bad">ran out of time</span>`;
+    return `<span class="res-tag bad">missed</span>`;
+  };
   const rows = CHECKS.base.map((it,i)=>{
     const b=base[i], r=re[i];
-    let mark, note='';
-    if(b==='good' && r==='good'){ mark='✓'; note='held'; }
-    else if(b!=='good' && r==='good'){ mark='▲'; note='baseline → dignified'; }
-    else if(b==='good' && r!=='good'){ mark='▼'; note='dignified → slipped'; }
-    else { mark='↺'; note='still worth revisiting'; }
-    return `<div class="rule"><div class="n">${mark}</div><div><b>${it.short}</b> ${it.key} <em style="color:var(--ink-soft)">(${note})</em></div></div>`;
+    let mark;
+    if(b==='good' && r==='good') mark='✓';
+    else if(b!=='good' && r==='good') mark='▲';
+    else if(b==='good' && r!=='good') mark='▼';
+    else mark='↺';
+    const baseTag = base.length ? `<span class="res-attempt">Baseline: ${tag(b)}</span>` : '';
+    const reTag = `<span class="res-attempt">Retake: ${tag(r)}</span>`;
+    return `<div class="rule"><div class="n">${mark}</div><div>
+      <b>Q${i+1}. ${it.short}</b>
+      <div class="res-attempts">${baseTag}${reTag}</div>
+      <div>${it.key}</div>
+    </div></div>`;
   }).join('');
 
   app.innerHTML=`
@@ -463,7 +479,7 @@ function screenResults(){
       <p class="tag" style="margin-top:12px;color:var(--ink-soft);font-weight:600">${line}</p>
     </div>
     <div class="card-print">
-      <h3>The seven, and the dignified read</h3>
+      <h3>Every question: how you did on both, and the dignified read</h3>
       <div class="rulelist">${rows}</div>
     </div>
     <div class="note"><span style="font-size:22px">📸</span><div>If your chapter tracks completions, <b>screenshot this screen</b> and send it to your coordinator. The baseline-to-retake shift is the part worth recording.</div></div>
@@ -748,9 +764,9 @@ function screenWrap(){
         <div class="rule"><div class="n">1</div><div><b>See the person first.</b> Athlete, artist, IT guy, coffee drinker: that comes before the disability, at every age.</div></div>
         <div class="rule"><div class="n">2</div><div><b>Offer, don't impose.</b> Ask “want a hand?”, then honor the answer, including the first no.</div></div>
         <div class="rule"><div class="n">3</div><div><b>Talk to the person.</b> Not their aide, not the staff, not over their head, even when going around them feels gentler.</div></div>
-        <div class="rule"><div class="n">4</div><div><b>Real, not staged.</b> Let people earn it and lead it. Gifted wins and forced touches fool nobody.</div></div>
+        <div class="rule"><div class="n">4</div><div><b>Real, not staged.</b> Let our friends earn everything by themselves, or lead it knowing we are available for support. Letting someone win, and being "extra" inclusive doesn't fool anyone.</div></div>
         <div class="rule"><div class="n">5</div><div><b>No spotlights.</b> Public patience, loud accommodation, and “being careful with him” all single someone out. Fix logistics quietly.</div></div>
-        <div class="rule"><div class="n">6</div><div><b>Kind ≠ dignified.</b> The mistakes that matter look like helping. When in doubt: ask, wait, and take their answer.</div></div>
+        <div class="rule"><div class="n">6</div><div><b>Kind ≠ dignified.</b> The choices we think are expressing kindness may not always be the most dignified. So when in doubt: ask, wait, and listen to their answer.</div></div>
       </div>
     </div>
 
@@ -767,7 +783,7 @@ function screenWrap(){
 
     <div class="note no-print" style="margin-top:20px">
       <span style="font-size:22px">💬</span>
-      <div>These scenarios are a starting point written from experience, not the final word. The most important review comes from <b>CAMP participants, their families, and self-advocates</b>. Their edits are what make this training actually theirs.</div>
+      <div>These scenarios are a starting point written from experience. The most important review comes from <b>the community</b>. Their edits are what make this training actually useful and beneficial for fostering an independent yet supportive environment.</div>
     </div>
 
     <div class="cta-row no-print" style="margin-top:24px">
